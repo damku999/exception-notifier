@@ -12,9 +12,9 @@ The `exception-notifier` package is designed to handle and notify about exceptio
 - [Usage](#usage)
 - [Features](#features)
 - [Contributing](#contributing)
-- [Security](#Security)
-- [Credits](#Credits)
-- [About Webmonks](#About Webmonks)
+- [Security](#security)
+- [Credits](#credits)
+- [About Webmonks](#aboutwebmonks)
 - [License](#license)
 
 ## Installation
@@ -119,14 +119,14 @@ Contributions are welcome! If you have any ideas for improvements or find a bug,
 
 If you discover any security issues, please contact us directly via email at damku999@gmail.com, rather than opening an issue on GitHub.
 
+
 ## Credits
 
 - [Darshan Baraiya](https://github.com/damku999)
 - [Squareboat](https://github.com/squareboat/sneaker)
 - [All Contributors](../../contributors)
 
-## About Webmonks
-
+## AboutWebmonks
 [Webmonks](https://webmonks.in) is a product development startup based in Ahmedabad, India. You can explore all our open-source projects on [GitHub](https://github.com/damku999).
 
 ## License
