@@ -10,7 +10,7 @@ return [
     |
      */
 
-    'email' => env('EXCEPTION_NOTIFIER_EMAIL', ['darshan@adaptit.co.uk']),
+    'email' => env('EXCEPTION_NOTIFIER_EMAIL', ['hello@localhost.com']),
     /*
      * The subject line of the exception email.
      *
