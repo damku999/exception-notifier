@@ -1,0 +1,64 @@
+{
+    "name": "adaptit-darshan/exception-notifier",
+    "description": "An easy-to-use package for sending email notifications with stack traces whenever an exception occurs in your Laravel application.",
+    "type": "library",
+    "require": {
+        "php": ">=7.4 || ^8.0",
+        "illuminate/support": "8.*|9.*|10.*|11.*",
+        "illuminate/view": "8.*|9.*|10.*|11.*",
+        "illuminate/config": "8.*|9.*|10.*|11.*",
+        "illuminate/mail": "8.*|9.*|10.*|11.*",
+        "illuminate/log": "8.*|9.*|10.*|11.*",
+        "illuminate/queue": "8.*|9.*|10.*|11.*",
+        "illuminate/console": "8.*|9.*|10.*|11.*",
+        "symfony/error-handler": "~5.1|~6.0|~7.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AdaptItDarshan\\ExceptionNotifier\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+
+    "keywords": [
+        "error-reporting",
+        "bug-tracking",
+        "laravel-log-email",
+        "exception-notifier",
+        "error-monitoring",
+        "automatic-error-notification",
+        "laravel-error-alerts",
+        "server-error-email",
+        "exception-logging",
+        "laravel-exception-monitoring",
+        "email-alerts",
+        "real-time-error-notification",
+        "laravel-exception-handler",
+        "error-debugging",
+        "Laravel Error Monitoring",
+        "Laravel Exception Handler",
+        "Error Reporting",
+        "Exception Tracking",
+        "Server Error Notification",
+        "Stack Trace Email Alerts",
+        "Laravel Bug Tracking",
+        "Real-time Error Alerts",
+        "Laravel Error Logging",
+        "Automated Error Notification"
+    ],
+    "authors": [
+        {
+            "name": "Darshan Baraiya",
+            "email": "damku999@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AdaptItDarshan\\ExceptionNotifier\\Providers\\ExceptionNotifierServiceProvider"
+            ]
+        }
+    }
+}
