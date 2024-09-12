@@ -12,6 +12,9 @@ The `exception-notifier` package is designed to handle and notify about exceptio
 - [Usage](#usage)
 - [Features](#features)
 - [Contributing](#contributing)
+- [Security](#Security)
+- [Credits](#Credits)
+- [About Webmonks](#About Webmonks)
 - [License](#license)
 
 ## Installation
@@ -111,6 +114,21 @@ $notifier->notify(new \Exception('Custom exception message'));
 
 Contributions are welcome! If you have any ideas for improvements or find a bug, please open an issue or submit a pull request on the [GitHub repository](https://github.com/damku999/exception-notifier).
 
+
+## Security
+
+If you discover any security issues, please contact us directly via email at damku999@gmail.com, rather than opening an issue on GitHub.
+
+## Credits
+
+- [Darshan Baraiya](https://github.com/damku999)
+- [Squareboat](https://github.com/squareboat/sneaker)
+- [All Contributors](../../contributors)
+
+## About Webmonks
+
+[Webmonks](https://webmonks.in) is a product development startup based in Ahmedabad, India. You can explore all our open-source projects on [GitHub](https://github.com/damku999).
+
 ## License
 
 The `exception-notifier` package is open-source software licensed under the [MIT License](https://opensource.org/licenses/MIT).
@@ -118,4 +136,6 @@ The `exception-notifier` package is open-source software licensed under the [MIT
 ---
 
 For more details, visit the [Packagist page](https://packagist.org/packages/adaptit-darshan/exception-notifier) or check out the [GitHub repository](https://github.com/damku999/exception-notifier).
-```
+
+
+
