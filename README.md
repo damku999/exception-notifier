@@ -123,7 +123,6 @@ If you discover any security issues, please contact us directly via email at dam
 ## Credits
 
 - [Darshan Baraiya](https://github.com/damku999)
-- [Squareboat](https://github.com/squareboat/sneaker)
 - [All Contributors](../../contributors)
 
 ## AboutWebmonks
