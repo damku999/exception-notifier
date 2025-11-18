@@ -1,140 +1,439 @@
+# Laravel Exception Notifier
 
-# Laravel Exception Notifications
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/damku999/exception-notifier.svg?style=flat-square)](https://packagist.org/packages/damku999/exception-notifier)
+[![Total Downloads](https://img.shields.io/packagist/dt/damku999/exception-notifier.svg?style=flat-square)](https://packagist.org/packages/damku999/exception-notifier)
+[![License](https://img.shields.io/packagist/l/damku999/exception-notifier.svg?style=flat-square)](https://packagist.org/packages/damku999/exception-notifier)
 
-An easy-to-use package for sending email notifications with stack traces whenever an exception occurs in your Laravel application.
+> **Version 2.0** - Major upgrade with Laravel 12+ support! 🚀
 
-The `exception-notifier` package is designed to handle and notify about exceptions in your application. It provides a convenient way to get notified whenever an exception occurs, making it easier to monitor and respond to issues in real-time.
+**Laravel Exception Notifier** is a production-ready exception notification system for Laravel 12+ applications. Get instant email alerts when exceptions occur in your application with intelligent rate limiting, customizable templates, and comprehensive context data.
 
-## Table of Contents
+## 🆕 What's New in v2.0
 
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Features](#features)
-- [Contributing](#contributing)
-- [Security](#security)
-- [Credits](#credits)
-- [About Webmonks](#aboutwebmonks)
-- [License](#license)
+- ✨ **Laravel 12+ Support** - Modern `bootstrap/app.php` pattern
+- ✨ **PHP 8.2+ Required** - Latest PHP features and performance
+- ✨ **Per-Signature Rate Limiting** - Each exception tracked separately
+- ✨ **Critical Exception Bypass** - Important errors always notify
+- ✨ **Enhanced Bot Detection** - Better false positive filtering
+- ✨ **Zero-Loop Guarantee** - Fixed infinite loop bug with dependency injection
+- ✨ **Email Branding** - Customizable logo, colors, and footer
 
-## Installation
+**Upgrading from v1.x?** See [UPGRADE.md](UPGRADE.md) for migration guide.
 
-To install the `exception-notifier` package, you can use Composer. Run the following command:
+## ✨ Features
+
+- 🚨 **Instant Email Notifications** - Get notified immediately when exceptions occur
+- 🎯 **Smart Rate Limiting** - Per-exception-signature rate limiting to prevent email spam
+- 🔥 **Critical Exception Bypass** - Critical exceptions always bypass rate limits
+- 📊 **Rich Context Data** - Stack traces, request details, user information, and more
+- 🎨 **Customizable Email Templates** - Beautiful, responsive HTML email templates
+- 🤖 **Bot Detection** - Automatically ignore exceptions from bots and crawlers
+- 🔧 **Artisan Commands** - Manage rate limits and test notifications via CLI
+- 🌍 **Environment-Aware** - Silent mode in local environment during development
+- 📝 **Detailed Logging** - All exceptions still logged even when email suppressed
+- ⚡ **Zero Performance Impact** - Notifications wrapped in try-catch to never break your app
+
+## 📋 Requirements
+
+- PHP 8.2 or higher
+- Laravel 12.0 or higher
+- Mail configuration (SMTP, Mailgun, SES, etc.)
+
+## 📦 Installation
+
+Install the package via Composer:
 
 ```bash
-composer require adaptit-darshan/exception-notifier
+composer require damku999/exception-notifier
 ```
 
-This command will add the package to your `composer.json` file and install it in your project.
+### Publish Configuration
 
-## Configuration
-
-After installing the package, you need to configure it to suit your needs. Here’s a basic example of how to configure the notifier.
-
-1. **Publish the Configuration File**
-
-Publish the ExceptionEmail configuration file by running the following Artisan command:
+Publish the configuration file:
 
 ```bash
-php artisan vendor:publish --provider="AdaptItDarshan\ExceptionNotifier\Providers\ExceptionNotifierServiceProvider"
+php artisan vendor:publish --tag="exception-notifier-config"
 ```
 
-This will create a configuration file at `config/exception-notifier.php`.
+This will create `config/exception_notifier.php` with all available options.
 
-**Recipients**
-Specify the email addresses that should receive the exception notifications by updating the `email` array:
-you can use EXCEPTION_NOTIFIER_EMAIL in .env file
+### Publish Email Templates (Optional)
+
+If you want to customize the email templates:
+
+```bash
+php artisan vendor:publish --tag="exception-notifier-views"
+```
+
+Templates will be published to `resources/views/vendor/exception-notifier/`.
+
+### Publish Migrations (Optional)
+
+If you want to use database-backed rate limiting:
+
+```bash
+php artisan vendor:publish --tag="exception-notifier-migrations"
+php artisan migrate
+```
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+Add these to your `.env` file:
+
+```env
+# Enable exception email notifications (default: false)
+EXCEPTION_EMAIL_ENABLED=true
+
+# Silent mode in local environment (default: true)
+EXCEPTION_EMAIL_SILENT_LOCAL=true
+
+# Email recipients (comma-separated)
+EXCEPTION_EMAIL_TO=admin@example.com,dev@example.com
+
+# Rate limiting (default: 10 emails per hour per signature)
+EXCEPTION_EMAIL_MAX_PER_HOUR=10
+EXCEPTION_EMAIL_RATE_WINDOW=3600
+```
+
+### Basic Setup
+
+Update your `bootstrap/app.php` to use the exception notifier:
 
 ```php
-'email' => [
-    env('EXCEPTION_NOTIFIER_EMAIL', ['hello@example.com'])
-],
+<?php
+
+use Damku999\ExceptionNotifier\JsonExceptionHandler;
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
+
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        api: __DIR__.'/../routes/api.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+    )
+    ->withMiddleware(function (Middleware $middleware) {
+        //
+    })
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->render(function (Throwable $e) {
+            return app(JsonExceptionHandler::class)->handle($e);
+        });
+    })->create();
 ```
 
-**Customizing Emails**
-To customize the subject and body of the error notification emails blade file are created inside : \resources\views\vendor\exception-notifier\emails\
+### Advanced Configuration
 
-
-**Capture Exceptions**
-You can specify which types of exceptions should trigger email notifications. By default, the package includes `\Symfony\Component\ErrorHandler\Error\FatalError::class`.
+Edit `config/exception_notifier.php` for advanced options:
 
 ```php
-'capture' => [
-    \Symfony\Component\ErrorHandler\Error\FatalError::class,
-],
+return [
+    // Enable/disable globally
+    'enabled' => env('EXCEPTION_EMAIL_ENABLED', false),
+
+    // Silent mode in local environment
+    'silent_in_local' => env('EXCEPTION_EMAIL_SILENT_LOCAL', true),
+
+    // Email recipients
+    'recipients' => array_filter(array_map('trim', explode(',', env('EXCEPTION_EMAIL_TO', '')))),
+
+    // Fallback recipients if none specified
+    'fallback_recipients' => ['admin@example.com'],
+
+    // Rate limiting
+    'max_emails_per_signature_per_hour' => env('EXCEPTION_EMAIL_MAX_PER_HOUR', 10),
+    'rate_limit_window' => env('EXCEPTION_EMAIL_RATE_WINDOW', 3600),
+
+    // Ignored exceptions (won't send emails)
+    'ignored_exceptions' => [
+        \Illuminate\Validation\ValidationException::class,
+        \Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class,
+        \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException::class,
+        \Illuminate\Auth\AuthenticationException::class,
+    ],
+
+    // Critical exceptions (bypass rate limits)
+    'critical_exceptions' => [
+        \Illuminate\Database\QueryException::class,
+    ],
+
+    // Bot user agents to ignore
+    'ignored_bots' => [
+        'googlebot', 'bingbot', 'crawler', 'spider', 'bot',
+    ],
+
+    // Include context data in emails
+    'include_request_data' => true,
+    'include_user_data' => true,
+    'include_stack_trace' => true,
+    'max_stack_trace_depth' => 10,
+
+    // Send suppression notice when rate limit reached
+    'send_suppression_notice' => true,
+];
 ```
 
-To capture all exceptions, you can use the wildcard `'*'`:
+## 🚀 Usage
+
+### Automatic Exception Handling
+
+Once configured in `bootstrap/app.php`, the package automatically catches and notifies you of exceptions:
 
 ```php
-'capture' => [
-    '*'
-],
+// Any uncaught exception will trigger an email notification
+throw new \Exception('Something went wrong!');
+
+// Validation exceptions are ignored by default (configurable)
+throw ValidationException::withMessages(['email' => 'Invalid email']);
+
+// Database exceptions are marked as critical (always sent)
+DB::table('non_existent')->get(); // Triggers critical email
 ```
 
-**Ignored Exceptions**
-You may define exceptions that should not trigger email notifications. This is done by adding them to the `ignored_exception` array.
+### Manual Exception Notification
+
+You can manually trigger exception notifications:
 
 ```php
-'ignored_exception' => [
-    \Illuminate\Validation\ValidationException::class,
-],
+use Damku999\ExceptionNotifier\Facades\ExceptionNotifier;
+
+try {
+    // Your code
+} catch (\Throwable $e) {
+    ExceptionNotifier::notify($e);
+
+    // Continue with your error handling
+}
 ```
 
-**Ignored Bots**
-You can configure the package to ignore errors triggered by bots, like search engine crawlers. The default configuration includes common bots such as:
+### Checking Rate Limits
+
+```php
+use Damku999\ExceptionNotifier\Facades\ExceptionNotifier;
+
+// Check if rate limit exceeded for specific exception
+$signature = ExceptionNotifier::generateSignature($exception);
+$exceeded = ExceptionNotifier::isRateLimitExceeded($signature);
+
+// Get current count for signature
+$count = ExceptionNotifier::getRateLimitCount($signature);
+
+// Get all rate limit statuses
+$statuses = ExceptionNotifier::getRateLimitStatus();
+```
+
+## 🔧 Artisan Commands
+
+### View Rate Limit Status
+
+View current rate limit status for all exception signatures:
+
+```bash
+php artisan exception:rate-limit-status
+```
+
+Output:
+```
+┌──────────────────────────────────────────────────────────────┬───────┬─────┬──────────┐
+│ Exception Signature                                          │ Count │ Max │ TTL (s)  │
+├──────────────────────────────────────────────────────────────┼───────┼─────┼──────────┤
+│ Exception:app/Http/Controllers/UserController.php:45         │ 8     │ 10  │ 2847     │
+│ QueryException:app/Models/User.php:123                       │ 15    │ 10  │ 1523     │
+└──────────────────────────────────────────────────────────────┴───────┴─────┴──────────┘
+```
+
+### Clear Rate Limits
+
+Clear all rate limits:
+
+```bash
+php artisan exception:clear-rate-limits
+```
+
+Clear specific signature:
+
+```bash
+php artisan exception:clear-rate-limits --signature="Exception:app/Http/Controllers/UserController.php:45"
+```
+
+### Test Exception Emails
+
+Send a test exception email:
+
+```bash
+php artisan exception:test
+```
+
+Send test with custom exception type:
+
+```bash
+php artisan exception:test --type=critical
+```
+
+## 📧 Email Templates
+
+The package includes two beautiful, responsive email templates:
+
+### Exception Notification Email
+
+Sent when an exception occurs (within rate limits):
+
+- **Exception Summary** - Class, message, file, line, signature
+- **Stack Trace** - Formatted call stack with file/line numbers
+- **Request Details** - URL, method, IP, user agent
+- **User Context** - Authenticated user information
+- **Environment Info** - Environment name and timestamp
+- **Rate Limit Status** - Current count vs maximum allowed
+
+### Rate Limit Suppression Email
+
+Sent once when rate limit is reached:
+
+- **Rate Limit Info** - Signature, max count, time remaining
+- **What This Means** - Explanation of suppression
+- **Action Required** - Steps to investigate and resolve
+- **Helpful Commands** - CLI commands to manage rate limits
+
+### Customizing Templates
+
+Publish the views and edit them:
+
+```bash
+php artisan vendor:publish --tag="exception-notifier-views"
+```
+
+Templates location: `resources/views/vendor/exception-notifier/`
+
+### Customizing Email Branding
+
+Override the branding configuration:
+
+```php
+// In your AppServiceProvider or config
+config([
+    'exception_notifier.branding' => [
+        'email_logo' => 'images/logo.png',
+        'primary_color' => '#007bff',
+        'text_color' => '#333333',
+        'footer_text' => 'Your Company Name',
+        'support_email' => 'support@example.com',
+    ],
+]);
+```
+
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+composer test
+```
+
+Run tests with coverage:
+
+```bash
+composer test:coverage
+```
+
+## 📊 Exception Signature Format
+
+The package generates unique signatures for each exception using:
+
+```
+Format: ExceptionClass:FilePath:LineNumber
+Example: Exception:app/Http/Controllers/UserController.php:45
+```
+
+This ensures:
+- ✅ Same exception at same location = same signature
+- ✅ Rate limiting works per unique error
+- ✅ Different locations = different signatures
+
+## 🔒 Security
+
+### Preventing Infinite Loops
+
+The package is designed to never break your application:
+
+```php
+// In JsonExceptionHandler
+try {
+    $this->notifierService->notify($e);
+} catch (Throwable $notificationError) {
+    // Silently fail if notification fails
+    Log::error('Exception notification failed', [
+        'error' => $notificationError->getMessage(),
+    ]);
+}
+```
+
+### Bot Protection
+
+Automatically ignores exceptions from bots to prevent spam:
 
 ```php
 'ignored_bots' => [
-    'googlebot',
-    'bingbot',
-    'slurp', 
-    'ia_archiver',
+    'googlebot', 'bingbot', 'slurp', 'crawler', 'spider',
+    'bot', 'facebookexternalhit', 'twitterbot', 'whatsapp',
+    'telegram', 'curl', 'wget',
 ],
 ```
 
-## Usage
+## 🤝 Contributing
 
-Once you have configured the package, it will automatically handle and notify about exceptions based on the settings you provided. You can also manually notify about exceptions if needed:
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-```php
-use ExceptionNotifier\ExceptionNotifier;
+### Development Setup
 
-$notifier = new ExceptionNotifier(config('exception-notifier'));
-$notifier->notify(new \Exception('Custom exception message'));
+```bash
+# Clone the repository
+git clone https://github.com/damku999/exception-notifier.git
+cd exception-notifier
+
+# Install dependencies
+composer install
+
+# Run tests
+composer test
+
+# Run code style checks
+composer lint
 ```
 
-## Features
+## 📝 Changelog
 
-- **Email Notifications**: Send notifications via email to specified recipients.
-- **Logging**: Optionally log exceptions to a file for future reference.
-- **Customizable Configuration**: Easily customize the configuration to fit your needs.
+Please see [CHANGELOG.md](CHANGELOG.md) for recent changes.
 
-## Contributing
+## 📄 License
 
-Contributions are welcome! If you have any ideas for improvements or find a bug, please open an issue or submit a pull request on the [GitHub repository](https://github.com/damku999/exception-notifier).
+The MIT License (MIT). Please see [LICENSE.md](LICENSE.md) for more information.
 
+## 🙏 Credits
 
-## Security
+- **Author**: Darshan Baraiya
+- **GitHub**: [@damku999](https://github.com/damku999)
+- **Built with**: Laravel 12, PHP 8.2
 
-If you discover any security issues, please contact us directly via email at damku999@gmail.com, rather than opening an issue on GitHub.
+## 💡 Use Cases
 
+Perfect for:
 
-## Credits
+- 🏢 **Production Applications** - Monitor critical production errors
+- 🔧 **Staging Environments** - Catch bugs before production
+- 📊 **API Services** - Track API failures and exceptions
+- 🚀 **Microservices** - Centralized exception monitoring
+- 👥 **Team Collaboration** - Multiple developers receive alerts
 
-- [Darshan Baraiya](https://github.com/damku999)
-- [All Contributors](../../contributors)
+## 🆘 Support
 
-## AboutWebmonks
-[Webmonks](https://webmonks.in?github/damku999) is a product development startup based in Ahmedabad, India. You can explore all our open-source projects on [GitHub](https://github.com/damku999).
-
-## License
-
-The `exception-notifier` package is open-source software licensed under the [MIT License](https://opensource.org/licenses/MIT).
+- 📖 [Documentation](https://github.com/damku999/exception-notifier/wiki)
+- 🐛 [Issue Tracker](https://github.com/damku999/exception-notifier/issues)
+- 💬 [Discussions](https://github.com/damku999/exception-notifier/discussions)
 
 ---
 
-For more details, visit the [Packagist page](https://packagist.org/packages/adaptit-darshan/exception-notifier) or check out the [GitHub repository](https://github.com/damku999/exception-notifier).
-
-
-
+**Developed by [Darshan Baraiya](https://github.com/damku999)**

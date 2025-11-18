@@ -1,64 +1,77 @@
 {
-    "name": "adaptit-darshan/exception-notifier",
-    "description": "An easy-to-use package for sending email notifications with stack traces whenever an exception occurs in your Laravel application.",
-    "type": "library",
-    "require": {
-        "php": ">=7.4 || ^8.0",
-        "illuminate/support": "8.*|9.*|10.*|11.*",
-        "illuminate/view": "8.*|9.*|10.*|11.*",
-        "illuminate/config": "8.*|9.*|10.*|11.*",
-        "illuminate/mail": "8.*|9.*|10.*|11.*",
-        "illuminate/log": "8.*|9.*|10.*|11.*",
-        "illuminate/queue": "8.*|9.*|10.*|11.*",
-        "illuminate/console": "8.*|9.*|10.*|11.*",
-        "symfony/error-handler": "~5.1|~6.0|~7.0"
-    },
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "AdaptItDarshan\\ExceptionNotifier\\": "src/"
-        }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true,
-
+    "name": "damku999/exception-notifier",
+    "description": "Production-ready exception notification system for Laravel 12+ with intelligent rate limiting, critical exception handling, and customizable email templates. Major v2.0 upgrade with modern Laravel 12 support.",
     "keywords": [
-        "error-reporting",
-        "bug-tracking",
-        "laravel-log-email",
-        "exception-notifier",
-        "error-monitoring",
-        "automatic-error-notification",
-        "laravel-error-alerts",
-        "server-error-email",
-        "exception-logging",
-        "laravel-exception-monitoring",
-        "email-alerts",
-        "real-time-error-notification",
-        "laravel-exception-handler",
-        "error-debugging",
-        "Laravel Error Monitoring",
-        "Laravel Exception Handler",
-        "Error Reporting",
-        "Exception Tracking",
-        "Server Error Notification",
-        "Stack Trace Email Alerts",
-        "Laravel Bug Tracking",
-        "Real-time Error Alerts",
-        "Laravel Error Logging",
-        "Automated Error Notification"
+        "laravel",
+        "exception",
+        "notifier",
+        "email",
+        "notification",
+        "error",
+        "monitoring",
+        "alert",
+        "rate-limiting",
+        "laravel-12"
     ],
+    "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Darshan Baraiya",
-            "email": "damku999@gmail.com"
+            "email": "darshan@adaptit.co.uk",
+            "role": "Developer"
         }
     ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^12.0",
+        "illuminate/container": "^12.0",
+        "illuminate/config": "^12.0",
+        "illuminate/mail": "^12.0",
+        "illuminate/cache": "^12.0",
+        "illuminate/console": "^12.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0",
+        "phpunit/phpunit": "^11.0",
+        "laravel/pint": "^1.0",
+        "phpstan/phpstan": "^2.0",
+        "rector/rector": "^1.0",
+        "pestphp/pest": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Damku999\\ExceptionNotifier\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Damku999\\ExceptionNotifier\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "test:coverage": "vendor/bin/pest --coverage",
+        "lint": "vendor/bin/pint",
+        "analyse": "vendor/bin/phpstan analyse",
+        "refactor": "vendor/bin/rector process"
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "preferred-install": "dist"
+    },
     "extra": {
         "laravel": {
             "providers": [
-                "AdaptItDarshan\\ExceptionNotifier\\Providers\\ExceptionNotifierServiceProvider"
-            ]
+                "Damku999\\ExceptionNotifier\\ExceptionNotifierServiceProvider"
+            ],
+            "aliases": {
+                "ExceptionNotifier": "Damku999\\ExceptionNotifier\\Facades\\ExceptionNotifier"
+            }
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
