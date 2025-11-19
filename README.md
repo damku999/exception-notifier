@@ -4,21 +4,26 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/damku999/exception-notifier.svg?style=flat-square)](https://packagist.org/packages/damku999/exception-notifier)
 [![License](https://img.shields.io/packagist/l/damku999/exception-notifier.svg?style=flat-square)](https://packagist.org/packages/damku999/exception-notifier)
 
-> **Version 2.0** - Major upgrade with Laravel 12+ support! 🚀
+> **Version 1.2.0** - Universal Laravel support (8-13) with backward compatibility! 🚀
 
-**Laravel Exception Notifier** is a production-ready exception notification system for Laravel 12+ applications. Get instant email alerts when exceptions occur in your application with intelligent rate limiting, customizable templates, and comprehensive context data.
+**Laravel Exception Notifier** is a production-ready exception notification system for Laravel 8-13 applications. Get instant email alerts when exceptions occur in your application with intelligent rate limiting, customizable templates, and comprehensive context data.
 
-## 🆕 What's New in v2.0
+## 🆕 What's New in v1.2.0
 
-- ✨ **Laravel 12+ Support** - Modern `bootstrap/app.php` pattern
-- ✨ **PHP 8.2+ Required** - Latest PHP features and performance
+- ✨ **Universal Laravel Support** - Works with Laravel 8, 9, 10, 11, 12, and 13
+- ✨ **PHP 7.4+ / 8.x Support** - Backward compatible with PHP 7.4 through 8.x
+- ✨ **Full Backward Compatibility** - Drop-in replacement for v1.0.1 and v1.1.0
 - ✨ **Per-Signature Rate Limiting** - Each exception tracked separately
 - ✨ **Critical Exception Bypass** - Important errors always notify
 - ✨ **Enhanced Bot Detection** - Better false positive filtering
 - ✨ **Zero-Loop Guarantee** - Fixed infinite loop bug with dependency injection
 - ✨ **Email Branding** - Customizable logo, colors, and footer
 
-**Upgrading from v1.x?** See [UPGRADE.md](UPGRADE.md) for migration guide.
+**Version Options:**
+- **v1.2.0** - Universal support for Laravel 8-13 (PHP 7.4+) - **Recommended**
+- **v2.0.0** - Laravel 12+ only (PHP 8.2+) - Breaking changes
+
+**Upgrading from v1.0.1 or v1.1.0?** No breaking changes - simply `composer update`
 
 ## ✨ Features
 
@@ -35,9 +40,25 @@
 
 ## 📋 Requirements
 
+**Version 1.2.0 (Recommended):**
+- PHP 7.4+ / 8.x (supports PHP 7.4, 8.0, 8.1, 8.2, 8.3, 8.4)
+- Laravel 8.x, 9.x, 10.x, 11.x, 12.x, or 13.x
+- Mail configuration (SMTP, Mailgun, SES, etc.)
+
+**Version 2.0.0:**
 - PHP 8.2 or higher
 - Laravel 12.0 or higher
 - Mail configuration (SMTP, Mailgun, SES, etc.)
+
+**Compatibility Matrix (v1.2.0):**
+| Laravel Version | PHP Version Required | Status |
+|----------------|---------------------|--------|
+| Laravel 8.x | ^7.3\|^8.0 | ✅ Supported |
+| Laravel 9.x | ^8.0.2 | ✅ Supported |
+| Laravel 10.x | ^8.1 | ✅ Supported |
+| Laravel 11.x | ^8.2 | ✅ Supported |
+| Laravel 12.x | ^8.2 | ✅ Supported |
+| Laravel 13.x | ^8.2 | ✅ Supported |
 
 ## 📦 Installation
 
