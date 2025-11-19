@@ -1,6 +1,6 @@
 {
-    "name": "damku999/exception-notifier",
-    "description": "Production-ready exception notification system for Laravel 12+ with intelligent rate limiting, critical exception handling, and customizable email templates. Major v2.0 upgrade with modern Laravel 12 support.",
+    "name": "adaptit-darshan/exception-notifier",
+    "description": "Production-ready exception notification system for Laravel 8-13 with intelligent rate limiting, critical exception handling, and customizable email templates. Supports Laravel 8, 9, 10, 11, 12, and 13.",
     "keywords": [
         "laravel",
         "exception",
@@ -11,7 +11,12 @@
         "monitoring",
         "alert",
         "rate-limiting",
-        "laravel-12"
+        "laravel-8",
+        "laravel-9",
+        "laravel-10",
+        "laravel-11",
+        "laravel-12",
+        "laravel-13"
     ],
     "type": "library",
     "license": "MIT",
@@ -23,31 +28,33 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "illuminate/support": "^12.0",
-        "illuminate/container": "^12.0",
-        "illuminate/config": "^12.0",
-        "illuminate/mail": "^12.0",
-        "illuminate/cache": "^12.0",
-        "illuminate/console": "^12.0"
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+        "illuminate/view": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+        "illuminate/config": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+        "illuminate/mail": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+        "illuminate/log": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+        "illuminate/queue": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+        "illuminate/console": "^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+        "symfony/error-handler": "^5.1|^6.0|^7.0|^8.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^10.0",
-        "phpunit/phpunit": "^11.0",
+        "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0|^10.0",
+        "phpunit/phpunit": "^9.5|^10.0|^11.0",
         "laravel/pint": "^1.0",
-        "phpstan/phpstan": "^2.0",
-        "rector/rector": "^1.0",
-        "pestphp/pest": "^3.0",
-        "pestphp/pest-plugin-laravel": "^3.0"
+        "phpstan/phpstan": "^1.0|^2.0",
+        "rector/rector": "^0.15|^1.0",
+        "pestphp/pest": "^1.0|^2.0|^3.0",
+        "pestphp/pest-plugin-laravel": "^1.0|^2.0|^3.0"
     },
     "autoload": {
         "psr-4": {
-            "Damku999\\ExceptionNotifier\\": "src/"
+            "AdaptItDarshan\\ExceptionNotifier\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Damku999\\ExceptionNotifier\\Tests\\": "tests/"
+            "AdaptItDarshan\\ExceptionNotifier\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -65,11 +72,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Damku999\\ExceptionNotifier\\ExceptionNotifierServiceProvider"
-            ],
-            "aliases": {
-                "ExceptionNotifier": "Damku999\\ExceptionNotifier\\Facades\\ExceptionNotifier"
-            }
+                "AdaptItDarshan\\ExceptionNotifier\\Providers\\ExceptionNotifierServiceProvider"
+            ]
         }
     },
     "minimum-stability": "stable",

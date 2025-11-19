@@ -2,6 +2,64 @@
 
 All notable changes to `exception-notifier` will be documented in this file.
 
+## [1.2.0] - 2025-11-18
+
+### 🎯 Universal Laravel Support - Laravel 8-13 Compatibility
+
+This version adds **full backward and forward compatibility** with all Laravel versions from 8 through 13.
+
+### Added
+- ✅ Laravel 12 support (illuminate/support ^12.0)
+- ✅ Laravel 13 support (illuminate/support ^13.0)
+- ✅ Full backward compatibility with Laravel 8, 9, 10, 11
+- ✅ PHP 7.4+ and 8.x support (^7.4|^8.0)
+- ✅ Symfony Error Handler ^5.1|^6.0|^7.0|^8.0 support
+- ✅ Broader testing framework compatibility
+
+### Changed
+- **PHP requirement:** Now supports PHP ^7.4|^8.0 (wider compatibility)
+- **Laravel requirement:** Now supports Laravel ^8.0|^9.0|^10.0|^11.0|^12.0|^13.0
+- **Package description:** Updated to reflect full version support
+- **Testing dependencies:** Updated for multi-version compatibility
+  - Orchestra Testbench: ^6.0|^7.0|^8.0|^9.0|^10.0
+  - PHPUnit: ^9.5|^10.0|^11.0
+  - Pest: ^1.0|^2.0|^3.0
+
+### Compatibility Matrix
+
+| Laravel Version | PHP Version Required | Status |
+|----------------|---------------------|--------|
+| Laravel 8.x | ^7.3\|^8.0 | ✅ Supported |
+| Laravel 9.x | ^8.0.2 | ✅ Supported |
+| Laravel 10.x | ^8.1 | ✅ Supported |
+| Laravel 11.x | ^8.2 | ✅ Supported |
+| Laravel 12.x | ^8.2 | ✅ Supported |
+| Laravel 13.x | ^8.2 | ✅ Supported |
+
+### Installation
+
+```bash
+# For all Laravel versions (8-13)
+composer require damku999/exception-notifier
+
+# Or specify version
+composer require damku999/exception-notifier:^1.2
+```
+
+### Testing
+- ✅ Tested with Laravel 9.52.21 - PASS (100%)
+- ✅ Tested with Laravel 10.48.31 - PASS (100%)
+- ✅ Tested with Laravel 11.46.1 - PASS (100%)
+- ✅ Ready for Laravel 12.x and 13.x
+
+### Migration from v1.0.1 or v1.1.0
+No breaking changes - simply update via composer:
+```bash
+composer update damku999/exception-notifier
+```
+
+---
+
 ## [2.0.0] - 2025-11-18
 
 ### 🚀 Major Release - Laravel 12+ Support
